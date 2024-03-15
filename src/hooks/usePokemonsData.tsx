@@ -29,7 +29,7 @@ export const usePokemonsData = () => {
     setloading(true);
 
     try {
-      const { data } = await showPokemon(identifier.toLowerCase());
+      const { data } = await showPokemon(identifier.toLowerCase().trim());
 
       const formattedPokemonToShowList = formatPokemonBySearch(data);
 
