@@ -1,0 +1,155 @@
+body {
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  /* background-color: #262626; */
+  background: url(/noise.png) #262626;
+}
+
+@keyframes d-fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes moveDown {
+  0% {
+    bottom: 80px;
+  }
+
+  50% {
+    bottom: -20px;
+  }
+
+  100% {
+    bottom: 0px;
+  }
+}
+
+@keyframes moveUp {
+  0% {
+    top: 0px;
+  }
+
+  50% {
+    top: -20px;
+  }
+
+  100% {
+    top: 0px;
+  }
+}
+
+#download-button > #download-icon:hover {
+  animation: moveDown 0.4s linear, d-fade 0.4s ease;
+}
+
+#download-icon {
+  position: relative !important;
+}
+
+.shadow-social-link {
+  --tw-shadow: 0 0 0 2px hsla(0, 0%, 100%, 0.06);
+  --tw-shadow-colored: 0 0 0 2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-social-link:hover {
+  --tw-shadow: 0 0 0 4px hsla(0, 0%, 100%, 0.09);
+  --tw-shadow-colored: 0 0 0 4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(0, 0), rotate(0);
+  }
+  20% {
+    transform: translate(-10px, 0) rotate(-20deg);
+  }
+  30% {
+    transform: translate(10px, 0) rotate(20deg);
+  }
+  50% {
+    transform: translate(-10px, 0) rotate(-10deg);
+  }
+  60% {
+    transform: translate(10px, 0) rotate(10deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+}
+
+@keyframes rotateSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+$numero-de-clases-inicial: 1025;
+$numero-de-clases-final: 10277;
+
+.poke-bg {
+  position: relative;
+  overflow: hidden;
+
+  & img {
+    aspect-ratio: 1/ 1;
+    pointer-events: none;
+  }
+}
+
+// Creamos un bucle que generará las clases
+@for $i from 0 through $numero-de-clases-inicial {
+  .poke-bg-#{$i}::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+#{$i}+".png");
+    z-index: -1;
+    background-size: cover;
+    // core code
+    filter: blur(50px);
+    transform: scale(3);
+  }
+}
+
+@for $i from 10000 through $numero-de-clases-final {
+  .poke-bg-#{$i}::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+#{$i}+".png");
+    z-index: -1;
+    background-size: cover;
+    // core code
+    filter: blur(50px);
+    transform: scale(3);
+  }
+}
+
+#loader {
+  animation: shake 0.8s infinite;
+  max-width: 40%;
+  &.rotateAnim {
+    animation: rotateSpin;
+    animation-duration: 2s;
+    animation-delay: 0.3s;
+    animation-iteration-count: infinite;
+  }
+}
