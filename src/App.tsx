@@ -1,8 +1,11 @@
 import { SnackbarProvider } from "notistack";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { SnackbarUtilitiesConfigurator } from "@/utilities/";
 import "./App.scss";
 
 import Home from "./views/Home";
+import DefaultLayout from "./layouts/DefaultLayout";
+import Details from "./views/Details";
 
 function App() {
   return (
@@ -10,12 +13,14 @@ function App() {
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
       <SnackbarUtilitiesConfigurator />
-
-      <div className="mx-auto max-w-3xl px-5 mb-5 flex flex-col gap-10">
-        <main className="flex flex-col gap-16 py-8">
-          <Home />
-        </main>
-      </div>
+      <DefaultLayout>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/pokemon/:id" element={<Details />} />
+          </Routes>
+        </BrowserRouter>
+      </DefaultLayout>
     </SnackbarProvider>
   );
 }

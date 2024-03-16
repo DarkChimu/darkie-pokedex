@@ -1,15 +1,22 @@
 import {
+  extractIdFromUrl,
   formatPokemonBySearch,
   formatPokemonsResults,
 } from "@/helpers/format-pokemons";
-import { showPokemon, testingService } from "@/services/testing.service";
+import {
+  showEvolutionTree,
+  showPokemon,
+  showSpeciesData,
+  testingService,
+} from "@/services/testing.service";
 import { useDebouncedCallback } from "use-debounce";
-import { PokedexList } from "@/models";
+import { PokeEvolution, PokeSpecies, PokedexList } from "@/models";
 import { useState } from "react";
 
 export const usePokemonsData = () => {
   const [loading, setloading] = useState(false);
   const [pokemonList, setPokemonList] = useState<PokedexList>();
+  const [evolutionsData, setEvolitionsData] = useState<PokeEvolution>();
 
   const fetchPokemons = async () => {
     setloading(true);
@@ -19,6 +26,33 @@ export const usePokemonsData = () => {
       const formattedResults = formatPokemonsResults(data.results);
       setPokemonList({ ...data, results: formattedResults });
       setloading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchEvolutionsData = async (identifier: string) => {
+    setloading(true);
+    try {
+      const speciesData = await fetchSpeciesData(identifier);
+      const { data } = await showEvolutionTree(
+        extractIdFromUrl(speciesData?.evolution_chain.url as string) as string
+      );
+
+      setEvolitionsData(data);
+    } catch (error) {
+      console.log(error);
+    }
+    setloading(false);
+  };
+
+  const fetchSpeciesData = async (identifier: string) => {
+    setloading(true);
+    try {
+      const { data } = await showSpeciesData(identifier);
+      setloading(false);
+
+      return data as PokeSpecies;
     } catch (error) {
       console.log(error);
     }
@@ -50,5 +84,8 @@ export const usePokemonsData = () => {
     fetchPokemons,
     searchByPokemonName: debouncedSearch,
     loading,
+    fetchEvolutionsData,
+    fetchSpeciesData,
+    evolutionsData,
   };
 };

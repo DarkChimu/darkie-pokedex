@@ -29,7 +29,7 @@ export const AxiosInterceptor = () => {
 
   axios.interceptors.response.use(
     (response) => {
-      console.log("response", response.data);
+      // console.log("response", response.data);
       // SnackbarUtilities.success("Success");
       return response;
     },

@@ -14,6 +14,14 @@ export const showPokemon = (identifier: string) => {
   return axios.get(`pokemon/${identifier}`);
 };
 
+export const showEvolutionTree = (identifier: string | number) => {
+  return axios.get(`evolution-chain/${identifier}`);
+};
+
+export const showSpeciesData = (identifier: string | number) => {
+  return axios.get(`pokemon-species/${identifier}`);
+};
+
 export const refreshToken = () => {
   return axios.post(
     "https://rickandmortyapi.com/api/refreshtoken",

@@ -3,6 +3,7 @@ body {
   color: rgba(255, 255, 255, 0.87);
   /* background-color: #262626; */
   background: url(/noise.png) #262626;
+  scroll-behavior: smooth;
 }
 
 @keyframes d-fade {
@@ -101,7 +102,7 @@ $numero-de-clases-final: 10277;
 .poke-bg {
   position: relative;
   overflow: hidden;
-
+  cursor: pointer;
   & img {
     aspect-ratio: 1/ 1;
     pointer-events: none;
