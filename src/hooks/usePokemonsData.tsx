@@ -31,6 +31,21 @@ export const usePokemonsData = () => {
     }
   };
 
+  const fetchMorePokemons = async () => {
+    try {
+      const { data } = await testingService();
+
+      const formattedResults = formatPokemonsResults(data.results);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      setPokemonList((prev: any) => ({
+        ...prev,
+        results: [...prev.results, ...formattedResults],
+      }));
+      setloading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const fetchEvolutionsData = async (identifier: string) => {
     setloading(true);
     try {
@@ -87,5 +102,6 @@ export const usePokemonsData = () => {
     fetchEvolutionsData,
     fetchSpeciesData,
     evolutionsData,
+    fetchMorePokemons,
   };
 };

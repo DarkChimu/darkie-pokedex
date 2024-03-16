@@ -6,6 +6,9 @@ const Loader = () => {
         className={Math.round(Math.random()) === 1 ? "rotateAnim" : ""}
         src="/pokedex.png"
         alt=""
+        style={{
+          objectFit: "contain",
+        }}
       />
     </div>
   );

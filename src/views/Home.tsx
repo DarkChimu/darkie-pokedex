@@ -4,10 +4,16 @@ import SearchBar from "@/components/Bars/SearchBar";
 import PokemonCard from "@/components/Cards/PokemonCard";
 import Loader from "@/components/Loaders/Loader";
 import Header from "@/components/Appbar/Header";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Home = () => {
-  const { pokemonList, fetchPokemons, searchByPokemonName, loading } =
-    usePokemonsData();
+  const {
+    pokemonList,
+    fetchPokemons,
+    searchByPokemonName,
+    loading,
+    fetchMorePokemons,
+  } = usePokemonsData();
 
   useEffect(() => {
     fetchPokemons();
@@ -20,9 +26,19 @@ const Home = () => {
 
       {loading && <Loader />}
 
-      <div className="grid grid-cols-2 gap-4 ">
-        {!loading &&
-          pokemonList?.results?.map((el) => {
+      {!loading && (
+        <InfiniteScroll
+          className="grid grid-cols-2 gap-4"
+          next={fetchMorePokemons}
+          hasMore={true}
+          loader={
+            <div className="col-span-2 overflow-hidden">
+              <Loader />
+            </div>
+          }
+          dataLength={pokemonList?.results?.length || 0}
+        >
+          {pokemonList?.results?.map((el) => {
             return (
               <PokemonCard
                 key={el.id}
@@ -32,7 +48,8 @@ const Home = () => {
               />
             );
           })}
-      </div>
+        </InfiniteScroll>
+      )}
     </>
   );
 };
