@@ -1,5 +1,4 @@
 import { Type } from "@/models";
-import React from "react";
 
 const PokemonTypes = ({ types }: { types: Array<Type> }) => {
   return (
