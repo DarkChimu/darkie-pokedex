@@ -9,14 +9,15 @@ interface PokemonCard extends PokedexListResult {
 const PokemonCard = ({ name, image, id, replace }: Partial<PokemonCard>) => {
   const navigate = useNavigate();
 
-  const handleNavigate = (id: string) => navigate(`/pokemon/${id}`, { replace });
+  const handleNavigate = (id: string) =>
+    navigate(`/pokemon/${id}`, { replace });
   return (
     <div
       key={name}
       className={`poke-bg poke-bg-${id} rounded-lg text-slate-300`}
       onClick={() => handleNavigate(id as string)}
     >
-      <div>
+      <div id="pokecard">
         <img src={image} width={"100%"} style={{ objectFit: "cover" }} />
       </div>
       <div className="p-5">
