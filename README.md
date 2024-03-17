@@ -1,30 +1,55 @@
-# React + TypeScript + Vite
+<div align="center">
+<img src="public/pokeme.png" height="200px" width="auto" /> 
+<h3>
+ Darkie's Pokédex
+</h3>
+<p>Created for didactic and educational purposes.</p>
+<span>Pokémon and Pokémon character names are trademarks of Nintendo</span>
+</div>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🛠️ Stack
 
-Currently, two official plugins are available:
+- [**React + Vite**](https://vitejs.dev/) - Library for web and native user interfaces.
+- [**Redux**](https://redux.js.org) - A state container utility
+- [**Typescript**](https://www.typescriptlang.org/) - JavaScript with syntax for types.
+- [**Tailwindcss**](https://tailwindcss.com/) - A utility-first CSS framework for rapidly building custom designs.
+- [**PokéApi**](https://pokeapi.co) - The RESTful Pokémon API
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Getting Started
 
-## Expanding the ESLint configuration
+1. [Fork](https://github.com/DarkChimu/darkie-pokedex/fork) or clone this repository.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+git clone git@github.com:DarkChimu/darkie-pokedex.git
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. Install the dependencies:
+
+- We use [pnpm](https://pnpm.io) to install and manage the dependencies.
+
+```bash
+# Using Corepack (Node 18+):
+corepack enable pnpm
+
+# Install pnpm for Windows:
+iwr https://get.pnpm.io/install.ps1 -useb | iex
+
+```
+
+
+
+1. Run the development server:
+
+```bash
+# Run with pnpm:
+pnpm run dev
+
+# Run with yarn:
+yarn dev
+
+# Run with npm:
+npm run dev
+
+```
+
+4. Open [**http://localhost:5173**](http://localhost:5173/) with your browser to see the result 🚀

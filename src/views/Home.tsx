@@ -8,11 +8,12 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 const Home = () => {
   const {
-    pokemonList,
+    /* pokemonList, */
     fetchPokemons,
     searchByPokemonName,
     loading,
     fetchMorePokemons,
+    pokemonsData,
   } = usePokemonsData();
 
   useEffect(() => {
@@ -36,13 +37,13 @@ const Home = () => {
               <Loader />
             </div>
           }
-          dataLength={pokemonList?.results?.length || 0}
+          dataLength={pokemonsData.pokemons.length || 0}
         >
-          {pokemonList?.results?.map((el) => {
+          {pokemonsData.pokemons?.map((el) => {
             return (
               <PokemonCard
                 key={el.id}
-                id={el.id as string}
+                id={el.id}
                 name={el.name}
                 image={el.image}
               />

@@ -10,21 +10,30 @@ import {
   testingService,
 } from "@/services/testing.service";
 import { useDebouncedCallback } from "use-debounce";
-import { PokeEvolution, PokeSpecies, PokedexList } from "@/models";
+import { PokeEvolution, PokeSpecies, Pokemon } from "@/models";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppStore } from "@/redux/store";
+import { PokemonState, modifyPokemons } from "@/redux/states/pokemon.state";
 
 export const usePokemonsData = () => {
+  const dispatch = useDispatch();
+  const [selectedPokemonData, setSelectedPokemonData] = useState<Pokemon>();
+  const pokemonsData: PokemonState = useSelector(
+    (store: AppStore) => store.pokemons
+  );
+
   const [loading, setloading] = useState(false);
-  const [pokemonList, setPokemonList] = useState<PokedexList>();
   const [evolutionsData, setEvolitionsData] = useState<PokeEvolution>();
 
   const fetchPokemons = async () => {
+    console.log("pokemonsData State", pokemonsData);
     setloading(true);
     try {
       const { data } = await testingService();
 
       const formattedResults = formatPokemonsResults(data.results);
-      setPokemonList({ ...data, results: formattedResults });
+      dispatch(modifyPokemons({ pokemons: formattedResults }));
       setloading(false);
     } catch (error) {
       console.log(error);
@@ -32,20 +41,34 @@ export const usePokemonsData = () => {
   };
 
   const fetchMorePokemons = async () => {
+    console.log("FETCH MORE pokemonsData State", pokemonsData);
     try {
       const { data } = await testingService();
 
       const formattedResults = formatPokemonsResults(data.results);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      setPokemonList((prev: any) => ({
-        ...prev,
-        results: [...prev.results, ...formattedResults],
-      }));
+      dispatch(
+        modifyPokemons({
+          pokemons: pokemonsData.pokemons
+            ? [...pokemonsData.pokemons, ...formattedResults]
+            : formattedResults,
+        })
+      );
       setloading(false);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const fetchPokemonData = async (id: string) => {
+    if (!id) return;
+    try {
+      const { data } = await showPokemon(id);
+      setSelectedPokemonData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const fetchEvolutionsData = async (identifier: string) => {
     setloading(true);
     try {
@@ -82,7 +105,11 @@ export const usePokemonsData = () => {
 
       const formattedPokemonToShowList = formatPokemonBySearch(data);
 
-      setPokemonList({ ...data, results: [formattedPokemonToShowList] });
+      dispatch(
+        modifyPokemons({
+          pokemons: [formattedPokemonToShowList],
+        })
+      );
       setloading(false);
     } catch (error) {
       console.log(error);
@@ -95,13 +122,15 @@ export const usePokemonsData = () => {
   );
 
   return {
-    pokemonList,
     fetchPokemons,
+    fetchPokemonData,
     searchByPokemonName: debouncedSearch,
     loading,
     fetchEvolutionsData,
     fetchSpeciesData,
     evolutionsData,
     fetchMorePokemons,
+    pokemonsData,
+    selectedPokemonData,
   };
 };

@@ -1,32 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Pokemon, Type } from "@/models";
-import { showPokemon } from "@/services/testing.service";
+import { Type } from "@/models";
+
 import { TbPokeball } from "react-icons/tb";
 import { FaLeaf, FaList } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
 import PokemonEvolutions from "@/components/Details/PokemonEvolutions";
 import PokemonMoves from "@/components/Details/PokemonMoves";
 import PokemonTypes from "@/components/Details/PokemonTypes";
+import { usePokemonsData } from "@/hooks/usePokemonsData";
 
 const Details = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [pokemonData, setPokemonData] = useState<Pokemon>();
+  const { fetchPokemonData, selectedPokemonData } = usePokemonsData();
   const [selectedData, setSelectedData] = useState<string>("forms");
 
-  const fetchPokemonData = async () => {
-    if (!id) return;
-    try {
-      const { data } = await showPokemon(id);
-      setPokemonData(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    fetchPokemonData();
+    if (id) fetchPokemonData(id);
   }, [id]);
 
   return (
@@ -41,21 +32,24 @@ const Details = () => {
         </button>
         <div>
           <p className="max-w-pros text-slate-300 text-center text-4xl rounded-2xl capitalize">
-            {pokemonData?.name}
+            {selectedPokemonData?.name}
           </p>
           <p className="max-w-pros text-slate-300 text-center text-sm capitalize mt-1">
-            {pokemonData?.id}
+            {selectedPokemonData?.id}
           </p>
         </div>
       </div>
 
       <div
-        key={pokemonData?.name}
-        className={`poke-bg poke-bg-${pokemonData?.id} rounded-lg text-slate-300`}
+        key={selectedPokemonData?.name}
+        className={`poke-bg poke-bg-${selectedPokemonData?.id} rounded-lg text-slate-300`}
       >
         <div className="flex flex-row justify-center lg:max-h-full">
           <img
-            src={pokemonData?.sprites.other?.["official-artwork"].front_default}
+            src={
+              selectedPokemonData?.sprites.other?.["official-artwork"]
+                .front_default
+            }
             width={"100%"}
             style={{ objectFit: "cover" }}
           />
@@ -92,17 +86,17 @@ const Details = () => {
         </button>
       </div>
 
-      {selectedData === "forms" && pokemonData?.forms && (
+      {selectedData === "forms" && selectedPokemonData?.forms && (
         <PokemonEvolutions identifier={id as string} />
       )}
       {selectedData === "moves" && (
         <PokemonMoves
-          abilities={pokemonData?.abilities}
-          moves={pokemonData?.moves}
+          abilities={selectedPokemonData?.abilities}
+          moves={selectedPokemonData?.moves}
         />
       )}
       {selectedData === "types" && (
-        <PokemonTypes types={pokemonData?.types as Type[]} />
+        <PokemonTypes types={selectedPokemonData?.types as Type[]} />
       )}
     </>
   );
