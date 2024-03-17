@@ -1,5 +1,5 @@
 <div align="center">
-<img src="public/pokeme.png" height="200px" width="auto" /> 
+<img src="public/pokeme.png" height="200px" width="auto" style='border-radius: 50%'/> 
 <h3>
  Darkie's Pokédex
 </h3>
