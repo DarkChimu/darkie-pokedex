@@ -1,5 +1,5 @@
 import { SnackbarProvider } from "notistack";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { SnackbarUtilitiesConfigurator } from "@/utilities/";
 import "./App.scss";
 
@@ -21,6 +21,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/pokemon/:id" element={<Details />} />
+              <Route path="*" element={<Navigate to={"/"} />} />
             </Routes>
           </BrowserRouter>
         </DefaultLayout>
