@@ -1,4 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+export interface PokemonIndex {
+  [key: string]: IndexedPokemon;
+}
+
+export interface TypeIndex {
+  [key: string]: IndexedPokemon;
+}
+
 export interface PokedexList {
   count: number;
   next: string;
@@ -7,7 +15,7 @@ export interface PokedexList {
 }
 
 export interface PokedexListResult {
-  id?: string;
+  id?: string | number;
   name: string;
   url: string;
   image?: string;
@@ -34,6 +42,17 @@ export interface Pokemon {
   stats: Stat[];
   types: Type[];
   weight: number;
+}
+
+export interface IndexedPokemon {
+  id: number | string;
+  types: Type[];
+  name: string;
+  sprites: {
+    other: {
+      "official-artwork": OfficialArtwork;
+    };
+  };
 }
 
 export interface Ability {

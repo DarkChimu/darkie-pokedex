@@ -1,16 +1,27 @@
-import { PokedexListResult, /* Pokemon  */} from "@/models";
+import {
+  IndexedPokemon,
+  PokedexListResult,
+  Pokemon,
+  TypeIndex,
+} from "@/models";
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface PokemonState {
-  pokemons: Array<PokedexListResult>;
-  pokemonsByType: Array<PokedexListResult>;
+  types: TypeIndex;
+  pokemons: IndexedPokemon[];
+  pokemonsByType: IndexedPokemon[];
   pokemonsByGeneration: Array<PokedexListResult>;
+  selectedPokemonToShow: Partial<Pokemon>;
+  filter: string;
 }
 
 export const PokemonEmptyState: PokemonState = {
+  types: {},
   pokemons: [],
   pokemonsByType: [],
   pokemonsByGeneration: [],
+  selectedPokemonToShow: {},
+  filter: "all",
 };
 
 export const pokemonSlice = createSlice({

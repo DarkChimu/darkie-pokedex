@@ -1,10 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { usePokemonsData } from "@/hooks/usePokemonsData";
 import SearchBar from "@/components/Bars/SearchBar";
 import PokemonCard from "@/components/Cards/PokemonCard";
 import Loader from "@/components/Loaders/Loader";
 import Header from "@/components/Appbar/Header";
 import InfiniteScroll from "react-infinite-scroll-component";
+import SwipeToSlide from "@/components/Slider/SwipeSlider";
+import { IndexedPokemon } from "@/models";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ListGenerator = ({ data }: { data: IndexedPokemon[] }) => {
+  return (
+    <>
+      {data.map((el: IndexedPokemon, index: number) => {
+        return (
+          <PokemonCard
+            key={`${index}-${el.id}`}
+            id={el.id}
+            name={el.name}
+            image={el?.sprites.other["official-artwork"]?.front_default}
+          />
+        );
+      })}
+    </>
+  );
+};
 
 const Home = () => {
   const {
@@ -14,41 +34,58 @@ const Home = () => {
     loading,
     fetchMorePokemons,
     pokemonsData,
+    currentFilter,
+    filterBy,
   } = usePokemonsData();
 
+  const listLength = useMemo(
+    () =>
+      currentFilter
+        ? pokemonsData.pokemonsByType.length
+        : pokemonsData?.pokemons.length,
+    [
+      pokemonsData.pokemons.length,
+      currentFilter,
+      pokemonsData.pokemonsByType.length,
+    ]
+  );
+
   useEffect(() => {
-    fetchPokemons();
+    if (!listLength) fetchPokemons();
   }, []);
+
+  console.log("FILTER HOME", currentFilter);
 
   return (
     <>
       <Header />
       <SearchBar callback={searchByPokemonName} />
 
+      <SwipeToSlide
+        list={Object.keys(pokemonsData.types)}
+        currentValue={currentFilter}
+        callback={filterBy}
+      />
+
       {loading && <Loader />}
 
       {!loading && (
         <InfiniteScroll
           className="grid grid-cols-2 gap-4"
-          next={fetchMorePokemons}
-          hasMore={true}
+          next={!currentFilter ? fetchMorePokemons : () => {}}
+          hasMore={!currentFilter ? true : false}
           loader={
             <div className="col-span-2 overflow-hidden">
               <Loader />
             </div>
           }
-          dataLength={pokemonsData.pokemons.length || 0}
+          dataLength={listLength || 0}
         >
-          {pokemonsData.pokemons?.map((el) => {
-            return (
-              <PokemonCard
-                key={el.id}
-                id={el.id}
-                name={el.name}
-                image={el.image}
-              />
-            );
-          })}
+          {currentFilter ? (
+            <ListGenerator data={pokemonsData?.pokemonsByType} />
+          ) : (
+            <ListGenerator data={pokemonsData?.pokemons} />
+          )}
         </InfiniteScroll>
       )}
     </>

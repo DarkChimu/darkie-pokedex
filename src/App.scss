@@ -99,6 +99,40 @@ body {
 $numero-de-clases-inicial: 1025;
 $numero-de-clases-final: 10277;
 
+$type-list: bug, dark, dragon, electric, fairy, fighting, fire, flying, ghost,
+  grass, ground, ice, normal, poison, psychic, rock, steel, water, shadow;
+
+.type-bg {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  & img {
+    aspect-ratio: 1/ 1;
+    pointer-events: none;
+  }
+
+  @each $type in $type-list {
+    &.#{$type}::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("/icons/"+#{$type}+'.svg');
+      z-index: -1;
+      background-size: cover;
+      // core code
+      filter: blur(50px);
+      transform: scale(3);
+    }
+
+    &.#{$type}.active {
+      backdrop-filter: brightness(1.8);
+    }
+  }
+}
+
 .poke-bg {
   position: relative;
   overflow: hidden;

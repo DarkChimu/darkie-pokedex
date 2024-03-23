@@ -2,6 +2,8 @@ import { SnackbarProvider } from "notistack";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { SnackbarUtilitiesConfigurator } from "@/utilities/";
 import "./App.scss";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import Home from "./views/Home";
 import DefaultLayout from "./layouts/DefaultLayout";

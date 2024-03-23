@@ -74,7 +74,7 @@ export const formatPokemonHeight = (height: number | string): string => {
 };
 
 export const formatIdToShow = (id: string) =>
-  parseInt(id) > 100 ? id : parseInt(id) > 10 ? `0${id}` : `00${id}`;
+  parseInt(id) > 99 ? id : parseInt(id) > 10 ? `0${id}` : `00${id}`;
 
 export const extractIdFromUrl = (url: string) => {
   const regex = /\/(\d+)\/$/;

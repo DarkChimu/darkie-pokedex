@@ -33,3 +33,8 @@ export const refreshToken = () => {
     }
   );
 };
+
+export const types = async (type?: string) => {
+  const response = await axios.get(`type/${type ?? ""}`);
+  return response.data;
+};
