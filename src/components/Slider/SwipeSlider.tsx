@@ -17,9 +17,7 @@ function SwipeToSlide({ list, currentValue, callback }: SwipeSliderProps) {
     swipeToSlide: true,
     useCSS: true,
     autoplay: true,
-    autoplaySpeed: 5000,
-    speed: 2000,
-    cssEase: "linear",
+    autoplaySpeed: 3000,
   };
 
   const handleCallback = (
