@@ -19,6 +19,7 @@ const ListGenerator = ({ data }: { data: IndexedPokemon[] }) => {
             id={el.id}
             name={el.name}
             image={el?.sprites.other["official-artwork"]?.front_default}
+            types={el.types}
           />
         );
       })}
@@ -62,6 +63,7 @@ const Home = () => {
       <SearchBar callback={searchByPokemonName} />
 
       <SwipeToSlide
+        showImage
         list={Object.keys(pokemonsData.types)}
         currentValue={currentFilter}
         callback={filterBy}

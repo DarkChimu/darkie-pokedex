@@ -2,12 +2,18 @@ import Slider, { Settings } from "react-slick";
 import { IoIosClose } from "react-icons/io";
 
 export interface SwipeSliderProps {
+  showImage?: boolean;
   list: string[];
   currentValue: string;
   callback: (value: string) => void;
 }
 
-function SwipeToSlide({ list, currentValue, callback }: SwipeSliderProps) {
+function SwipeToSlide({
+  showImage,
+  list,
+  currentValue,
+  callback,
+}: SwipeSliderProps) {
   const settings: Settings = {
     dots: false,
     arrows: false,
@@ -53,15 +59,17 @@ function SwipeToSlide({ list, currentValue, callback }: SwipeSliderProps) {
               }`}
             >
               <div
-                className="flex items-center sm:gap-4 xs:gap-2"
+                className="flex items-center sm:gap-4 xs:gap-2 capitalize"
                 onClick={(event) => handleCallback(event, op)}
               >
-                <img
-                  src={`/icons/${op}.svg`}
-                  alt={`${op} type`}
-                  style={{ objectFit: "contain" }}
-                  width={"20px"}
-                />
+                {showImage && (
+                  <img
+                    src={`/icons/${op}.svg`}
+                    alt={`${op} type`}
+                    style={{ objectFit: "contain" }}
+                    width={"20px"}
+                  />
+                )}
                 {op}
               </div>
             </div>

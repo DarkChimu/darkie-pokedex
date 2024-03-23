@@ -1,20 +1,52 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Type } from "@/models";
 
 import { TbPokeball } from "react-icons/tb";
-import { FaLeaf, FaList } from "react-icons/fa";
+import { FaList } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
 import PokemonEvolutions from "@/components/Details/PokemonEvolutions";
 import PokemonMoves from "@/components/Details/PokemonMoves";
-import PokemonTypes from "@/components/Details/PokemonTypes";
 import { usePokemonsData } from "@/hooks/usePokemonsData";
+import PokemonCard from "@/components/Cards/PokemonCard";
+import SwipeToSlide from "@/components/Slider/SwipeSlider";
+import {
+  formatPokemonHeight,
+  formatPokemonWeight,
+} from "@/helpers/format-pokemons";
 
 const Details = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { fetchPokemonData, selectedPokemonData } = usePokemonsData();
   const [selectedData, setSelectedData] = useState<string>("forms");
+
+  const pokemonSprite = useMemo(
+    () => selectedPokemonData?.sprites?.other,
+    [selectedPokemonData?.sprites]
+  );
+
+  const pokemonInfo = useMemo(() => {
+    const pokemonInfo = [];
+
+    pokemonInfo.push(
+      `weight: ${formatPokemonWeight(selectedPokemonData?.weight as number)}`
+    );
+    pokemonInfo.push(
+      `height: ${formatPokemonHeight(selectedPokemonData?.height as number)}`
+    );
+    pokemonInfo.push(`B. Exp: ${selectedPokemonData?.base_experience}`);
+    selectedPokemonData?.stats.map((stat) => {
+      const statName =
+        stat.stat.name === "special-attack"
+          ? "Sp Attack"
+          : stat.stat.name === "special-defense"
+          ? "Sp Defense"
+          : stat.stat.name;
+      pokemonInfo.push(`${statName}: ${stat.base_stat}`);
+    });
+
+    return pokemonInfo;
+  }, [selectedPokemonData?.id]);
 
   useEffect(() => {
     if (id) fetchPokemonData(id);
@@ -30,28 +62,23 @@ const Details = () => {
         >
           <IoArrowBack />
         </button>
-        <div>
-          <p className="max-w-pros text-slate-300 text-center text-4xl rounded-2xl capitalize">
-            {selectedPokemonData?.name}
-          </p>
-          <p className="max-w-pros text-slate-300 text-center text-sm capitalize mt-1">
-            {selectedPokemonData?.id}
-          </p>
-        </div>
-      </div>
 
-      <div
-        key={selectedPokemonData?.name}
-        className={`poke-bg poke-bg-${selectedPokemonData?.id} rounded-lg text-slate-300`}
-      >
-        <div className="flex flex-row justify-center lg:max-h-full">
-          <img
-            src={
-              selectedPokemonData?.sprites.other?.["official-artwork"]
-                .front_default
+        <div className="mt-14">
+          <PokemonCard
+            name={selectedPokemonData?.name}
+            id={selectedPokemonData?.id}
+            types={selectedPokemonData?.types}
+            image={
+              pokemonSprite?.["official-artwork"].front_default ??
+              pokemonSprite?.home.front_default
             }
-            width={"100%"}
-            style={{ objectFit: "cover" }}
+          />
+        </div>
+        <div>
+          <SwipeToSlide
+            list={pokemonInfo}
+            currentValue={""}
+            callback={() => {}}
           />
         </div>
       </div>
@@ -70,20 +97,20 @@ const Details = () => {
         </button>
         <button
           type="button"
-          className="inline-flex gap-2 capitalize items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-neutral-700 dark:border-neutral-700 dark:text-white dark:hover:text-white dark:hover:bg-neutral-500 dark:focus:ring-neutral-500 dark:focus:text-white"
+          className="inline-flex gap-2 capitalize items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-neutral-700 dark:border-neutral-700 dark:text-white dark:hover:text-white dark:hover:bg-neutral-500 dark:focus:ring-neutral-500 dark:focus:text-white"
           onClick={() => setSelectedData("moves")}
         >
           <FaList />
           abilities
         </button>
-        <button
+        {/*  <button
           type="button"
           className="inline-flex gap-2 capitalize items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-neutral-700 dark:border-neutral-700 dark:text-white dark:hover:text-white dark:hover:bg-neutral-500 dark:focus:ring-neutral-500 dark:focus:text-white"
-          onClick={() => setSelectedData("types")}
+          onClick={() => setSelectedData("info")}
         >
           <FaLeaf />
-          types
-        </button>
+          Info
+        </button> */}
       </div>
 
       {selectedData === "forms" && selectedPokemonData?.forms && (
@@ -95,9 +122,9 @@ const Details = () => {
           moves={selectedPokemonData?.moves}
         />
       )}
-      {selectedData === "types" && (
+      {/* {selectedData === "info" && (
         <PokemonTypes types={selectedPokemonData?.types as Type[]} />
-      )}
+      )} */}
     </>
   );
 };

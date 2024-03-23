@@ -8,7 +8,7 @@ interface PokemonCard extends PokedexListResult {
 }
 
 const PokemonCard = memo(
-  ({ name, image, id, replace }: Partial<PokemonCard>) => {
+  ({ name, image, id, replace, types }: Partial<PokemonCard>) => {
     const navigate = useNavigate();
 
     const handleNavigate = (id: string) =>
@@ -28,9 +28,19 @@ const PokemonCard = memo(
               {name}
             </h5>
           </div>
-          <p className="mb-3 font-normal text-slate-300">
-            {formatIdToShow(id as string)}
-          </p>
+          <div className="flex flex-row justify-between items-center">
+            <p className="mb-3 font-normal text-slate-300">
+              {formatIdToShow(id as string)}
+            </p>
+            <div className="flex flex-row items-center gap-1">
+              {types?.length &&
+                types.map((t) => (
+                  <div id="poketype">
+                    <img src={`/icons/${t.type.name}.svg`} alt="" width={30} />
+                  </div>
+                ))}
+            </div>
+          </div>
         </div>
       </div>
     );

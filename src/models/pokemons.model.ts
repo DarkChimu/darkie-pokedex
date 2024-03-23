@@ -19,6 +19,7 @@ export interface PokedexListResult {
   name: string;
   url: string;
   image?: string;
+  types?: Type[];
 }
 
 export interface Pokemon {
