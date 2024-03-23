@@ -9,7 +9,6 @@ export interface SwipeSliderProps {
 
 function SwipeToSlide({ list, currentValue, callback }: SwipeSliderProps) {
   const settings: Settings = {
-    className: "mx-4",
     dots: false,
     arrows: false,
     infinite: true,
@@ -17,6 +16,10 @@ function SwipeToSlide({ list, currentValue, callback }: SwipeSliderProps) {
     slidesToScroll: 1,
     swipeToSlide: true,
     useCSS: true,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    speed: 2000,
+    cssEase: "linear",
   };
 
   const handleCallback = (
