@@ -1,6 +1,8 @@
 import {
   extractIdFromUrl,
   formatPokemonBySearch,
+  formatPokemonsResults,
+  getPokeSprites,
 } from "@/helpers/format-pokemons";
 import {
   showEvolutionTree,
@@ -40,29 +42,7 @@ export const usePokemonsData = () => {
           extractIdFromUrl(pokemon.url) as string
         )) as { data: Pokemon };
 
-        const { id, name, sprites, types } = data;
-
-        const official_artwork = sprites.other?.["official-artwork"];
-        const dream_world = sprites?.other?.dream_world;
-        const home = sprites?.other?.home;
-
-        return {
-          id,
-          name,
-          types,
-          url: pokemon.url,
-          sprites: {
-            other: {
-              "official-artwork": {
-                front_default:
-                  official_artwork?.front_default ||
-                  dream_world?.front_default ||
-                  home?.front_default,
-                front_shiny: official_artwork?.front_shiny,
-              },
-            },
-          },
-        };
+        return formatPokemonsResults(pokemon, data);
       })
     ).catch((error) => {
       console.log(error);
@@ -92,7 +72,6 @@ export const usePokemonsData = () => {
   };
 
   const fetchMorePokemons = async () => {
-    console.log("FETCH MORE pokemonsData State", pokemonsData);
     try {
       const { data } = await testingService();
 
@@ -113,26 +92,7 @@ export const usePokemonsData = () => {
     try {
       const { data } = await showPokemon(id as string);
 
-      const { sprites } = data;
-
-      const official_artwork = sprites.other?.["official-artwork"];
-      const dream_world = sprites?.other?.dream_world;
-      const home = sprites?.other?.home;
-
-      setSelectedPokemonData({
-        ...data,
-        sprites: {
-          other: {
-            "official-artwork": {
-              front_default:
-                official_artwork?.front_default ||
-                dream_world?.front_default ||
-                home?.front_default,
-              front_shiny: official_artwork?.front_shiny,
-            },
-          },
-        },
-      });
+      setSelectedPokemonData(getPokeSprites(data));
     } catch (error) {
       console.log(error);
     }

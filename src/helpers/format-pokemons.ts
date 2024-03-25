@@ -1,17 +1,60 @@
 import { PokedexListResult, Pokemon } from "@/models";
 
-export const formatPokemonsResults = (results: Array<PokedexListResult>) => {
-  return results.map((pokemon: PokedexListResult) => {
-    const regex = /\/(\d+)\/$/;
-    const match = pokemon.url.match(regex);
-    const id = match ? match[1] : null;
-    return {
-      id,
-      name: pokemon.name,
-      url: pokemon.url,
-      image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
-    };
-  });
+/**
+ * Get Pokemon Sprites
+ * @param {Pokemon} data Pokemon
+ * @returns {Pokemon}
+ */
+export const getPokeSprites = (data: Pokemon) => {
+  const { sprites } = data;
+
+  const official_artwork = sprites.other?.["official-artwork"];
+  const dream_world = sprites?.other?.dream_world;
+  const home = sprites?.other?.home;
+
+  return {
+    ...data,
+    sprites: {
+      other: {
+        "official-artwork": {
+          front_default:
+            official_artwork?.front_default ||
+            dream_world?.front_default ||
+            home?.front_default,
+          front_shiny: official_artwork?.front_shiny,
+        },
+      },
+    },
+  } as Pokemon;
+};
+
+export const formatPokemonsResults = (
+  pokemon: PokedexListResult,
+  data: Pokemon
+) => {
+  const { id, name, sprites, types } = data;
+
+  const official_artwork = sprites.other?.["official-artwork"];
+  const dream_world = sprites?.other?.dream_world;
+  const home = sprites?.other?.home;
+
+  return {
+    id,
+    name,
+    types,
+    url: pokemon.url,
+    sprites: {
+      other: {
+        "official-artwork": {
+          front_default:
+            official_artwork?.front_default ||
+            dream_world?.front_default ||
+            home?.front_default,
+          front_shiny: official_artwork?.front_shiny,
+        },
+      },
+    },
+  };
 };
 
 export const formatPokemonBySearch = (data: Pokemon) => {

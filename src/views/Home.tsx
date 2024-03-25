@@ -8,7 +8,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import SwipeToSlide from "@/components/Slider/SwipeSlider";
 import { IndexedPokemon } from "@/models";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ListGenerator = ({ data }: { data: IndexedPokemon[] }) => {
   return (
     <>
@@ -29,7 +28,6 @@ const ListGenerator = ({ data }: { data: IndexedPokemon[] }) => {
 
 const Home = () => {
   const {
-    /* pokemonList, */
     fetchPokemons,
     searchByPokemonName,
     loading,
@@ -38,6 +36,8 @@ const Home = () => {
     currentFilter,
     filterBy,
   } = usePokemonsData();
+
+  const { pokemonsByType, pokemons, types } = pokemonsData;
 
   const listLength = useMemo(
     () =>
@@ -62,7 +62,7 @@ const Home = () => {
 
       <SwipeToSlide
         showImage
-        list={Object.keys(pokemonsData.types)}
+        list={Object.keys(types)}
         currentValue={currentFilter}
         callback={filterBy}
       />
@@ -82,9 +82,9 @@ const Home = () => {
           dataLength={listLength || 0}
         >
           {currentFilter ? (
-            <ListGenerator data={pokemonsData?.pokemonsByType} />
+            <ListGenerator data={pokemonsByType} />
           ) : (
-            <ListGenerator data={pokemonsData?.pokemons} />
+            <ListGenerator data={pokemons} />
           )}
         </InfiniteScroll>
       )}

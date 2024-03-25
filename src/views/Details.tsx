@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { TbPokeball } from "react-icons/tb";
 import { FaList } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
@@ -124,14 +123,6 @@ const Details = () => {
           <FaList />
           abilities
         </button>
-        {/*  <button
-          type="button"
-          className="inline-flex gap-2 capitalize items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-neutral-700 dark:border-neutral-700 dark:text-white dark:hover:text-white dark:hover:bg-neutral-500 dark:focus:ring-neutral-500 dark:focus:text-white"
-          onClick={() => setSelectedData("info")}
-        >
-          <FaLeaf />
-          Info
-        </button> */}
       </div>
 
       {selectedData === "forms" && selectedPokemonData?.forms && (
@@ -148,9 +139,6 @@ const Details = () => {
           moves={selectedPokemonData?.moves}
         />
       )}
-      {/* {selectedData === "info" && (
-        <PokemonTypes types={selectedPokemonData?.types as Type[]} />
-      )} */}
     </>
   );
 };
