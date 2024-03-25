@@ -31,6 +31,7 @@ export const usePokemonsData = () => {
 
   const [selectedPokemonData, setSelectedPokemonData] = useState<Pokemon>();
   const [loading, setloading] = useState(false);
+  const [loadingEvolutions, setloadingEvolutions] = useState(false);
   const [evolutionsData, setEvolitionsData] = useState<PokeEvolution>();
 
   const getPokeData = async (data: PokedexList) => {
@@ -139,18 +140,21 @@ export const usePokemonsData = () => {
   };
 
   const fetchEvolutionsData = async (identifier: string) => {
-    setloading(true);
+    setloadingEvolutions(true);
     try {
-      const speciesData = await fetchSpeciesData(identifier);
+      const speciesDataInfo = await fetchSpeciesData(identifier);
       const { data } = await showEvolutionTree(
-        extractIdFromUrl(speciesData?.evolution_chain.url as string) as string
+        extractIdFromUrl(
+          speciesDataInfo?.evolution_chain.url as string
+        ) as string
       );
 
-      setEvolitionsData(data);
+      setEvolitionsData({ ...data, speciesData: { ...speciesDataInfo } });
     } catch (error) {
       console.log(error);
+    } finally {
+      setloadingEvolutions(false);
     }
-    setloading(false);
   };
 
   const fetchTypes = async () => {
@@ -175,12 +179,10 @@ export const usePokemonsData = () => {
   };
 
   const fetchSpeciesData = async (identifier: string) => {
-    setloading(true);
     try {
       const { data } = await showSpeciesData(identifier);
-      setloading(false);
 
-      return data as PokeSpecies;
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -248,6 +250,7 @@ export const usePokemonsData = () => {
     fetchPokemonData,
     searchByPokemonName: debouncedSearch,
     loading,
+    loadingEvolutions,
     fetchEvolutionsData,
     fetchSpeciesData,
     evolutionsData,

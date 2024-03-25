@@ -17,7 +17,13 @@ import {
 const Details = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { fetchPokemonData, selectedPokemonData } = usePokemonsData();
+  const {
+    fetchPokemonData,
+    fetchEvolutionsData,
+    selectedPokemonData,
+    evolutionsData,
+    loadingEvolutions,
+  } = usePokemonsData();
   const [selectedData, setSelectedData] = useState<string>("forms");
 
   const pokemonSprite = useMemo(
@@ -48,8 +54,17 @@ const Details = () => {
     return pokemonInfo;
   }, [selectedPokemonData?.id]);
 
+  const flavorText = useMemo(() => {
+    return evolutionsData?.speciesData?.flavor_text_entries
+      .filter((el) => el.language.name === "en")[0]
+      .flavor_text.replace("", "  ");
+  }, [evolutionsData?.id]);
+
   useEffect(() => {
-    if (id) fetchPokemonData(id);
+    if (id) {
+      fetchPokemonData(id);
+      fetchEvolutionsData(id);
+    }
   }, [id]);
 
   return (
@@ -82,6 +97,12 @@ const Details = () => {
           />
         </div>
       </div>
+      {flavorText?.length && (
+        <div id="Pokemon Flavor Text">
+          <h2 className="text-slate-300">About:</h2>
+          <h3 className="text-slate-300">{flavorText}</h3>
+        </div>
+      )}
 
       <div
         className="mx-auto inline-flex rounded-md shadow-sm box-content"
@@ -114,7 +135,12 @@ const Details = () => {
       </div>
 
       {selectedData === "forms" && selectedPokemonData?.forms && (
-        <PokemonEvolutions identifier={id as string} />
+        <PokemonEvolutions
+          identifier={id as string}
+          species={evolutionsData?.chain.species}
+          evolves_to={evolutionsData?.chain.evolves_to ?? []}
+          loading={loadingEvolutions}
+        />
       )}
       {selectedData === "moves" && (
         <PokemonMoves

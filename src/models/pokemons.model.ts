@@ -226,6 +226,7 @@ export interface PokeEvolution {
   baby_trigger_item: null;
   chain: Chain;
   id: number;
+  speciesData?: PokeSpecies;
 }
 
 export interface Chain {

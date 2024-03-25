@@ -55,8 +55,6 @@ const Home = () => {
     if (!listLength) fetchPokemons();
   }, []);
 
-  console.log("FILTER HOME", currentFilter);
-
   return (
     <>
       <Header />

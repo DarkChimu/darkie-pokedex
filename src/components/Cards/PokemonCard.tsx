@@ -35,7 +35,7 @@ const PokemonCard = memo(
             <div className="flex flex-row items-center gap-1">
               {types?.length &&
                 types.map((t) => (
-                  <div id="poketype">
+                  <div id="poketype" key={t.slot}>
                     <img src={`/icons/${t.type.name}.svg`} alt="" width={30} />
                   </div>
                 ))}
