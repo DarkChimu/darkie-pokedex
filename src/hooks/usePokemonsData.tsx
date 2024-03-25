@@ -13,7 +13,6 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   IndexedPokemon,
   PokeEvolution,
-  PokeSpecies,
   PokedexList,
   PokedexListResult,
   Pokemon,
